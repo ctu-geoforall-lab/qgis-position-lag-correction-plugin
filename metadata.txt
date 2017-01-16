@@ -10,14 +10,14 @@
 name=GPS Position Lag Correction
 qgisMinimumVersion=2.8
 description=Aerial Data Shift
-version=0.4
-author=Ondřej Pešek
+version=0.9
+author=Ondrej Pesek
 email=ondra.lobo@seznam.cz
 
 about=Aerial Data Shift for suro.cz
 
-tracker=https://github.com/ctu-osgeorel-proj/bp-pesek-2016/issues
-repository=https://github.com/ctu-osgeorel-proj/bp-pesek-2016.git
+tracker=https://github.com/ctu-geoforall-lab/qgis-position-lag-correction-plugin/issues
+repository=https://github.com/ctu-geoforall-lab/qgis-position-lag-correction-plugin
 # End of mandatory metadata
 
 # Recommended items:
@@ -28,11 +28,11 @@ repository=https://github.com/ctu-osgeorel-proj/bp-pesek-2016.git
 # Tags are comma separated with spaces allowed
 tags=gps,aerial,leveling
 
-homepage=https://github.com/ctu-osgeorel-proj/bp-pesek-2016
+homepage=https://ctu-geoforall-lab.github.io/qgis-position-lag-correction-plugin/
 category=Plugins
 icon=icon.png
 # experimental flag
-experimental=True
+experimental=False
 
 # deprecated flag (applies to the whole plugin, not just a single version)
 deprecated=False
