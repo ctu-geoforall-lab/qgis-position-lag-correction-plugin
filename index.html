@@ -43,22 +43,95 @@
             
   <div class="section" id="qgis-plugin-gps-position-lag-correction-documentation">
 <h1>QGIS Plugin GPS Position Lag Correction Documentation<a class="headerlink" href="#qgis-plugin-gps-position-lag-correction-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The plugin allows user to correct a record delay of points in QGIS. User is
+allowed to shift points by values, by constant distance or by constant time
+(variable distance considering current velocity). Ellipsoid WGS84 (EPSG:4326)
+is used as a reference ellipsoid.</p>
+</div>
+<div class="section" id="loading-of-plugin">
+<h2>Loading of plugin<a class="headerlink" href="#loading-of-plugin" title="Permalink to this headline">¶</a></h2>
+<p>There are many ways to install the plugin. The easiest method is to install
+it from the QGIS Plugin repository.</p>
+<p>Firstly, you have to open the plugins dialog – select
+<code class="docutils literal"><span class="pre">Manage</span> <span class="pre">and</span> <span class="pre">install</span> <span class="pre">plugins</span></code> from
+<code class="docutils literal"><span class="pre">Plugins</span></code> tab.</p>
+<p>Search for <code class="docutils literal"><span class="pre">GPS</span> <span class="pre">Position</span> <span class="pre">Lag</span> <span class="pre">Correction</span></code> plugin in
+the list on the <code class="docutils literal"><span class="pre">All</span></code> or <code class="docutils literal"><span class="pre">Not</span> <span class="pre">installed</span></code> tab.
+Select it and press the <code class="docutils literal"><span class="pre">Install</span></code> button.</p>
+</div>
+<div class="section" id="work-with-plugin">
+<h2>Work with plugin<a class="headerlink" href="#work-with-plugin" title="Permalink to this headline">¶</a></h2>
+<div class="figure" id="id1">
+<img alt="_images/screenshot-gui.png" src="_images/screenshot-gui.png" />
+<p class="caption"><span class="caption-text"><em>Fig 1: GUI</em></span></p>
+</div>
+<div class="section" id="input-and-output">
+<h3>Input and output<a class="headerlink" href="#input-and-output" title="Permalink to this headline">¶</a></h3>
+<p>As input, you have to define the file you want to work
+with. You can write the path to this file manually or
+use the button with <code class="docutils literal"><span class="pre">...</span></code>. By clicking
+on this button, you will get the dialog intended to
+choose your file. Click on OK will insert this path
+to the basic interface. Click
+on Cancel will interrupt the choosing dialog,
+and the input path will not be changed.</p>
+<p>The same procedure is with output, but there you define
+the path where the new file will be created.
+The choosing dialog for output is intended to
+choose folder, not file.</p>
+<div class="highlight-python"><div class="highlight"><pre>Input CSV contents
+lat_deg:    Latitude of point (EPSG:4326)
+lon_deg:    Longitude of point (EPS:4326)
+Gtm_sec:    Time stamp of measuring in seconds
+</pre></div>
+</div>
+<p>There is also an optional possibility of styling your points
+for better visualisation.</p>
+<p>By default, you have not defined any style
+and points will be created in the default QGIS style
+(on Style button is written <code class="docutils literal"><span class="pre">No</span> <span class="pre">style</span></code>)
+If you want your own style, you have to click on
+this button. You will get the browsing dialog.
+You are automatically directed to folder
+<code class="docutils literal"><span class="pre">styles</span></code> in the plugin folder; here you can
+choose qml file and click OK. Click on Cancel
+interrupts the dialog and sets again <code class="docutils literal"><span class="pre">No</span> <span class="pre">style</span></code>.
+If you choose your own style, you will see its name on the style button.</p>
+<p>In the default plugin version there are two presetted styles.
+User is allowed to import his own styles. Styling is based on the value in
+column <code class="docutils literal"><span class="pre">mereni</span></code>.</p>
+<p>If user prefers to visualise both the input and the output from one dialog,
+it is allowed by the <code class="docutils literal"><span class="pre">Show</span></code> button. Input layer is also styled and it gives
+user the opportunity to compary the shifted values with the original ones.</p>
+<div class="figure" id="id2">
+<img alt="_images/screenshot-styled.png" src="_images/screenshot-styled.png" />
+<p class="caption"><span class="caption-text"><em>Fig 2: Styled input</em></span></p>
+</div>
+</div>
+<div class="section" id="shift">
+<h3>Shift<a class="headerlink" href="#shift" title="Permalink to this headline">¶</a></h3>
+<p>Shift is done by clicking on the button <code class="docutils literal"><span class="pre">Solve</span></code>. User should define value of
+shif and can choose units - values, meters (distance) or seconds (variable
+distance considering current velocity). Points are shifted on a trajectory.</p>
+<div class="figure" id="id3">
+<img alt="_images/screenshot-shifted.png" src="_images/screenshot-shifted.png" />
+<p class="caption"><span class="caption-text"><em>Fig 3: Red ones shifted by 1.14 seconds</em></span></p>
+</div>
+</div>
+</div>
 <div class="section" id="authors">
 <h2>Authors<a class="headerlink" href="#authors" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Ondrej Pesek</li>
 </ul>
-<p><a class="reference external" href="http://geomatics.fsv.cvut.cz/research/osgeorel/">GeoForAll Laboratory</a> at Czech Technical University in Prague, Czech Republic</p>
-<p>In collaboration with <a class="reference external" href="http://www.suro.cz">SURO</a>.</p>
+<p><a class="reference external" href="http://geomatics.fsv.cvut.cz/research/osgeorel/">GeoForAll Laboratory</a> at
+Czech Technical University in Prague, Czech Republic</p>
+<p>In collaboration with <a class="reference external" href="http://www.suro.cz">SURO</a></p>
 <p>Under supervison of Martin Landa</p>
-<div class="section" id="licence">
-<h3>Licence<a class="headerlink" href="#licence" title="Permalink to this headline">¶</a></h3>
 <p>Source code (<a class="reference external" href="https://github.com/ctu-geoforall-lab/qgis-position-lag-correction-plugin">https://github.com/ctu-geoforall-lab/qgis-position-lag-correction-plugin</a>) licenced under GNU GPL 3.</p>
-</div>
-<div class="section" id="report-bugs">
-<h3>Report bugs<a class="headerlink" href="#report-bugs" title="Permalink to this headline">¶</a></h3>
 <p>Please report bugs at <a class="reference external" href="https://github.com/ctu-geoforall-lab/qgis-position-lag-correction-plugin/issues">https://github.com/ctu-geoforall-lab/qgis-position-lag-correction-plugin/issues</a></p>
-</div>
 </div>
 </div>
 
@@ -71,11 +144,14 @@
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">QGIS Plugin GPS Position Lag Correction Documentation</a><ul>
-<li><a class="reference internal" href="#authors">Authors</a><ul>
-<li><a class="reference internal" href="#licence">Licence</a></li>
-<li><a class="reference internal" href="#report-bugs">Report bugs</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#loading-of-plugin">Loading of plugin</a></li>
+<li><a class="reference internal" href="#work-with-plugin">Work with plugin</a><ul>
+<li><a class="reference internal" href="#input-and-output">Input and output</a></li>
+<li><a class="reference internal" href="#shift">Shift</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#authors">Authors</a></li>
 </ul>
 </li>
 </ul>
