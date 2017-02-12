@@ -45,10 +45,15 @@
 <h1>QGIS Plugin GPS Position Lag Correction Documentation<a class="headerlink" href="#qgis-plugin-gps-position-lag-correction-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p>The plugin allows user to correct a record delay of points in QGIS. User is
-allowed to shift points by values, by constant distance or by constant time
-(variable distance considering current velocity). Ellipsoid WGS84 (EPSG:4326)
-is used as a reference ellipsoid.</p>
+<p>The plugin allows user to correct a record delay of points GPS coordinates
+in QGIS. This delay occurs especially during airborne monitoring where even
+for one second measurement the plane / helicopter flies distance of several
+tens of meters. User is allowed to shift points by values, by constant
+distance or by constant time (variable distance considering current velocity).
+Ellipsoid WGS84 (EPSG:4326) is used as a reference ellipsoid.</p>
+<p>This plugin was developed on the demand of National Radiation Protection
+Institute (<a class="reference external" href="http://www.suro.cz">www.suro.cz</a>) for processing airborne
+radiation monitoring data.</p>
 </div>
 <div class="section" id="loading-of-plugin">
 <h2>Loading of plugin<a class="headerlink" href="#loading-of-plugin" title="Permalink to this headline">¶</a></h2>
