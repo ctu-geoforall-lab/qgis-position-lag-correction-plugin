@@ -1,0 +1,266 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>User Manual &mdash; QGIS Plugin GPS Position Lag Correction 0.9 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="QGIS Plugin GPS Position Lag Correction 0.9 documentation" href="index.html"/>
+        <link rel="next" title="Acknowledgement" href="acknowledgement.html"/>
+        <link rel="prev" title="Installation" href="installation.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> QGIS Plugin GPS Position Lag Correction
+          
+
+          
+            
+            <img src="_static/icon.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">User Manual</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#input-and-output">Input and output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#shift">Shift</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgement.html">Acknowledgement</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">QGIS Plugin GPS Position Lag Correction</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>User Manual</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/user-manual.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="user-manual">
+<h1>User Manual<a class="headerlink" href="#user-manual" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-center" id="id1">
+<img alt="_images/screenshot-gui.png" src="_images/screenshot-gui.png" />
+<p class="caption"><span class="caption-text">Figure 1: Plugin GUI.</span></p>
+</div>
+<div class="section" id="input-and-output">
+<h2>Input and output<a class="headerlink" href="#input-and-output" title="Permalink to this headline">¶</a></h2>
+<p>As input, you have to define the file you want to work with. You can
+write the path to this file manually or use the button with
+<code class="docutils literal"><span class="pre">...</span></code>. By clicking on this button, you will get the dialog intended
+to choose your file. Click on OK will insert this path to the basic
+interface. Click on Cancel will interrupt the choosing dialog, and the
+input path will not be changed.</p>
+<p>The same procedure is with output, but there you define
+the path where the new file will be created.
+The choosing dialog for output is intended to
+choose folder, not file.</p>
+<div class="highlight-python"><div class="highlight"><pre>Input CSV contents
+lat_deg:    Latitude of point (EPSG:4326)
+lon_deg:    Longitude of point (EPS:4326)
+Gtm_sec:    Time stamp of measuring in seconds
+</pre></div>
+</div>
+<p>There is also an optional possibility of styling your points
+for better visualisation.</p>
+<p>By default, you have not defined any style and points will be created
+in the default QGIS style (on Style button is written <code class="docutils literal"><span class="pre">No</span> <span class="pre">style</span></code>) If
+you want your own style, you have to click on this button. You will
+get the browsing dialog.  You are automatically directed to folder
+<code class="docutils literal"><span class="pre">styles</span></code> in the plugin folder; here you can choose qml file and
+click OK. Click on Cancel interrupts the dialog and sets again <code class="docutils literal"><span class="pre">No</span>
+<span class="pre">style</span></code>.  If you choose your own style, you will see its name on the
+style button.</p>
+<p>In the default plugin version there are two presetted styles.  User is
+allowed to import his own styles. Styling is based on the value in
+column <code class="docutils literal"><span class="pre">mereni</span></code>.</p>
+<p>If user prefers to visualise both the input and the output from one
+dialog, it is allowed by the <code class="docutils literal"><span class="pre">Show</span></code> button. Input layer is also
+styled and it gives user the opportunity to compary the shifted values
+with the original ones.</p>
+<div class="figure align-center" id="id2">
+<img alt="_images/screenshot-styled.png" src="_images/screenshot-styled.png" />
+<p class="caption"><span class="caption-text">Figure 2: Styled input.</span></p>
+</div>
+</div>
+<div class="section" id="shift">
+<h2>Shift<a class="headerlink" href="#shift" title="Permalink to this headline">¶</a></h2>
+<p>Shift is done by clicking on the button <code class="docutils literal"><span class="pre">Solve</span></code>. User should define
+value of shif and can choose units - values, meters (distance) or
+seconds (variable distance considering current velocity). Points are
+shifted on a trajectory.</p>
+<div class="figure align-center" id="id3">
+<img alt="_images/screenshot-shifted.png" src="_images/screenshot-shifted.png" />
+<p class="caption"><span class="caption-text">Figure 3: Red ones shifted by 1.14 seconds</span></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="acknowledgement.html" class="btn btn-neutral float-right" title="Acknowledgement" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="installation.html" class="btn btn-neutral" title="Installation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016-2017, CTU GeoForAll Lab.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.9',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

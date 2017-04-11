@@ -1,0 +1,30 @@
+Acknowledgement
+***************
+
+Authors
+-------
+
+* Ondrej Pesek
+
+`GeoForAll Laboratory
+<http://geomatics.fsv.cvut.cz/research/osgeorel/>`__ at Czech
+Technical University in Prague, Czech Republic. Under supervison of
+Martin Landa.
+
+In collaboration with National Radiation Protection Institute (SURO),
+Prague, Czech Republic (`SURO <http://www.suro.cz>`__).
+
+Licence
+-------
+
+Source code
+(https://github.com/ctu-geoforall-lab/qgis-position-lag-correction-plugin)
+licenced under GNU GPL 3.
+
+Report bugs or enhancements
+---------------------------
+
+You have found a bug in our software or you wish to implement a new
+feature. Please fill out bug/enhancement issue in `our GitHub
+bug-tracker
+<https://github.com/opengeolabs/qgis-safecast-plugin/issues>`__.
