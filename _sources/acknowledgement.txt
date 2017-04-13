@@ -27,4 +27,4 @@ Report bugs or enhancements
 You have found a bug in our software or you wish to implement a new
 feature. Please fill out bug/enhancement issue in `our GitHub
 bug-tracker
-<https://github.com/opengeolabs/qgis-safecast-plugin/issues>`__.
+<https://github.com/ctu-geoforall-lab/qgis-position-lag-correction-plugin/issues>`__.
