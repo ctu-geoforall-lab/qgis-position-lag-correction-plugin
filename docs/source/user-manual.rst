@@ -27,21 +27,24 @@ choose folder, not file.
    lon_deg:    Longitude of point (EPS:4326)
    Gtm_sec:    Time stamp of measuring in seconds
 
+.. tip:: See sample data in `plugin repository
+         <https://github.com/ctu-geoforall-lab/qgis-position-lag-correction-plugin/tree/master/sample_data>`__.
+            
 There is also an optional possibility of styling your points
 for better visualisation.
 
-By default, you have not defined any style and points will be created
-in the default QGIS style (on Style button is written ``No style``) If
-you want your own style, you have to click on this button. You will
-get the browsing dialog.  You are automatically directed to folder
-``styles`` in the plugin folder; here you can choose qml file and
-click OK. Click on Cancel interrupts the dialog and sets again ``No
-style``.  If you choose your own style, you will see its name on the
-style button.
+By default, you have not defined any style, points will be created in
+the default QGIS style (on Style button is written ``No style``). If
+you want to apply your own style, you have to click on this
+button. You will get the browsing dialog.  You are automatically
+directed to folder ``styles`` in the plugin folder; here you can
+choose desired QML file and click OK. Click on Cancel interrupts the dialog
+and sets again ``No style``.  If you choose your own style, you will
+see its name on the style button.
 
-In the default plugin version there are two presetted styles.  User is
-allowed to import his own styles. Styling is based on the value in
-column ``mereni``.
+Plugin comes with two presetted styles. User is allowed to import his
+own styles. Styling is based on the value in column ``mereni`` by
+default.
 
 If user prefers to visualise both the input and the output from one
 dialog, it is allowed by the ``Show`` button. Input layer is also
@@ -56,10 +59,10 @@ Shift
 -----
 
 Shift is done by clicking on the button ``Solve``. User should define
-value of shif and can choose units - values, meters (distance) or
+value of shift and can choose units - values, meters (distance) or
 seconds (variable distance considering current velocity). Points are
 shifted on a trajectory.
 
 .. figure:: images/screenshot-shifted.png
 
-   Red ones shifted by 1.14 seconds
+   Red ones shifted by 1.14 seconds.

@@ -7,7 +7,7 @@ Authors
 * Ondrej Pesek
 
 `GeoForAll Laboratory
-<http://geomatics.fsv.cvut.cz/research/osgeorel/>`__ at Czech
+<http://geomatics.fsv.cvut.cz/research/geoforall/>`__ at Czech
 Technical University in Prague, Czech Republic. Under supervison of
 Martin Landa.
 
