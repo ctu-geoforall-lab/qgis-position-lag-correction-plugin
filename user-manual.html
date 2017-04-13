@@ -160,19 +160,23 @@ lon_deg:    Longitude of point (EPS:4326)
 Gtm_sec:    Time stamp of measuring in seconds
 </pre></div>
 </div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">See sample data in <a class="reference external" href="https://github.com/ctu-geoforall-lab/qgis-position-lag-correction-plugin/tree/master/sample_data">plugin repository</a>.</p>
+</div>
 <p>There is also an optional possibility of styling your points
 for better visualisation.</p>
-<p>By default, you have not defined any style and points will be created
-in the default QGIS style (on Style button is written <code class="docutils literal"><span class="pre">No</span> <span class="pre">style</span></code>) If
-you want your own style, you have to click on this button. You will
-get the browsing dialog.  You are automatically directed to folder
-<code class="docutils literal"><span class="pre">styles</span></code> in the plugin folder; here you can choose qml file and
-click OK. Click on Cancel interrupts the dialog and sets again <code class="docutils literal"><span class="pre">No</span>
-<span class="pre">style</span></code>.  If you choose your own style, you will see its name on the
-style button.</p>
-<p>In the default plugin version there are two presetted styles.  User is
-allowed to import his own styles. Styling is based on the value in
-column <code class="docutils literal"><span class="pre">mereni</span></code>.</p>
+<p>By default, you have not defined any style, points will be created in
+the default QGIS style (on Style button is written <code class="docutils literal"><span class="pre">No</span> <span class="pre">style</span></code>). If
+you want to apply your own style, you have to click on this
+button. You will get the browsing dialog.  You are automatically
+directed to folder <code class="docutils literal"><span class="pre">styles</span></code> in the plugin folder; here you can
+choose desired QML file and click OK. Click on Cancel interrupts the dialog
+and sets again <code class="docutils literal"><span class="pre">No</span> <span class="pre">style</span></code>.  If you choose your own style, you will
+see its name on the style button.</p>
+<p>Plugin comes with two presetted styles. User is allowed to import his
+own styles. Styling is based on the value in column <code class="docutils literal"><span class="pre">mereni</span></code> by
+default.</p>
 <p>If user prefers to visualise both the input and the output from one
 dialog, it is allowed by the <code class="docutils literal"><span class="pre">Show</span></code> button. Input layer is also
 styled and it gives user the opportunity to compary the shifted values
@@ -185,12 +189,12 @@ with the original ones.</p>
 <div class="section" id="shift">
 <h2>Shift<a class="headerlink" href="#shift" title="Permalink to this headline">¶</a></h2>
 <p>Shift is done by clicking on the button <code class="docutils literal"><span class="pre">Solve</span></code>. User should define
-value of shif and can choose units - values, meters (distance) or
+value of shift and can choose units - values, meters (distance) or
 seconds (variable distance considering current velocity). Points are
 shifted on a trajectory.</p>
 <div class="figure align-center" id="id3">
 <img alt="_images/screenshot-shifted.png" src="_images/screenshot-shifted.png" />
-<p class="caption"><span class="caption-text">Figure 3: Red ones shifted by 1.14 seconds</span></p>
+<p class="caption"><span class="caption-text">Figure 3: Red ones shifted by 1.14 seconds.</span></p>
 </div>
 </div>
 </div>
