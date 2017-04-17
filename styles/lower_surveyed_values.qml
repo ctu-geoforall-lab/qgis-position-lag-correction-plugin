@@ -34,11 +34,11 @@
     <edittype widgetv2type="TextEdit" name="ALTsp_m">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
-    <edittype widgetv2type="TextEdit" name="mereni">
+    <edittype widgetv2type="TextEdit" name="measurement">
       <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
     </edittype>
   </edittypes>
-  <renderer-v2 attr="mereni" forceraster="0" symbollevels="0" type="graduatedSymbol" graduatedMethod="GraduatedColor" enableorderby="0">
+  <renderer-v2 attr="measurement" forceraster="0" symbollevels="0" type="graduatedSymbol" graduatedMethod="GraduatedColor" enableorderby="0">
     <ranges>
       <range render="true" symbol="0" lower="0.000000000000000" upper="300.000000000000000" label=" &lt; 300 "/>
       <range render="true" symbol="1" lower="300.000000000000000" upper="400.000000000000000" label=" 300 - 400 "/>
