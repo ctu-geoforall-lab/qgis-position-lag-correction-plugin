@@ -1,4 +1,4 @@
-line,recs,set,old_Line,old_RECS,UsedAlt_m,Ghead_deg,Lat_deg,Lon_deg,Galt_m,Gtm_sec,Epoch_sec,mereni
+line,recs,set,old_Line,old_RECS,UsedAlt_m,Ghead_deg,Lat_deg,Lon_deg,Galt_m,Gtm_sec,Epoch_sec,measurement
 360,0,1,360,0,132,212,50.72434700,15.60908100,483.90,28080,1434527280,106.83
 360,1,1,360,1,132,210,50.72406600,15.60883900,483.80,28081,1434527281,206.69
 360,2,1,360,2,131,210,50.72377900,15.60861100,483.20,28082,1434527282,251.00
