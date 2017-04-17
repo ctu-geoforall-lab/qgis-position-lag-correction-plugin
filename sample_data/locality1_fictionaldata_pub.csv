@@ -1,4 +1,4 @@
-Line,RECS,UsedAlt_m,GHead_deg,Lat_deg,Lon_deg,Galt_m,Gtm_sec,mereni
+Line,RECS,UsedAlt_m,GHead_deg,Lat_deg,Lon_deg,Galt_m,Gtm_sec,measurement
 900,402,125,211,49.311943,15.980162,684.40,24636,1217.71
 900,403,124,211,49.311470,15.979719,683.90,24637,1378.70
 900,404,124,211,49.310998,15.979276,683.70,24638,1268.23
