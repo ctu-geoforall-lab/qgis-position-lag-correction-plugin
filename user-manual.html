@@ -30,6 +30,9 @@
   
 
   
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="QGIS Plugin GPS Position Lag Correction 0.9 documentation" href="index.html"/>
         <link rel="next" title="Acknowledgement" href="acknowledgement.html"/>
         <link rel="prev" title="Installation" href="installation.html"/> 
@@ -86,7 +89,8 @@
             
                 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">User Manual</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User Manual</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#input-and-output">Input and output</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#shift">Shift</a></li>
 </ul>
@@ -138,9 +142,24 @@
             
   <div class="section" id="user-manual">
 <h1>User Manual<a class="headerlink" href="#user-manual" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The plugin was developed to solve the GPS lag issue occuring especially during airborne mesurements. For example - for one second one second measurement the plane / helicopter flies distance of several tens of meters.</p>
 <div class="figure align-center" id="id1">
-<img alt="_images/screenshot-gui.png" src="_images/screenshot-gui.png" />
-<p class="caption"><span class="caption-text">Figure 1: Plugin GUI.</span></p>
+<img alt="_images/001_GPS_lag-flight.png" src="_images/001_GPS_lag-flight.png" />
+<p class="caption"><span class="caption-text">Figure 1: GPS lag occurrence.</span></p>
+</div>
+<p>The plugin allows user to correct a such delay of points defined by GPS coordinates in QGIS by shifting the points by values, constant distance or by constant time (variable distance considering current velocity). For calculating distances the plugin uses WGS84 reference ellipsoid (EPSG:4326).</p>
+<div class="figure align-center" id="id2">
+<img alt="_images/002_GPS_lag_correction.png" src="_images/002_GPS_lag_correction.png" />
+<p class="caption"><span class="caption-text">Figure 2: GPS lag correction.</span></p>
+</div>
+<p>You can use constant shift value if you know (of have calculated) delay for your instrument. Alternatively you can adjust the shift manually in more steps following the visual output and your expert judgement.</p>
+<p>The plugin takes input data in CSV (more in next section) and allows shift by number of points, time or distance. Shifted data are in CSV file again but you can also save them in other format directly from QGIS.</p>
+<div class="figure align-center" id="id3">
+<img alt="_images/003_plugin_GUI.png" src="_images/003_plugin_GUI.png" />
+<p class="caption"><span class="caption-text">Figure 3: Plugin GUI.</span></p>
+</div>
 </div>
 <div class="section" id="input-and-output">
 <h2>Input and output<a class="headerlink" href="#input-and-output" title="Permalink to this headline">¶</a></h2>
@@ -154,10 +173,10 @@ input path will not be changed.</p>
 the path where the new file will be created.
 The choosing dialog for output is intended to
 choose folder, not file.</p>
-<div class="highlight-python"><div class="highlight"><pre>Input CSV contents
-lat_deg:    Latitude of point (EPSG:4326)
-lon_deg:    Longitude of point (EPS:4326)
-Gtm_sec:    Time stamp of measuring in seconds
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Input</span> <span class="n">CSV</span> <span class="n">contents</span>
+<span class="n">lat_deg</span><span class="p">:</span>    <span class="n">Latitude</span> <span class="n">of</span> <span class="n">point</span> <span class="p">(</span><span class="n">EPSG</span><span class="p">:</span><span class="mi">4326</span><span class="p">)</span>
+<span class="n">lon_deg</span><span class="p">:</span>    <span class="n">Longitude</span> <span class="n">of</span> <span class="n">point</span> <span class="p">(</span><span class="n">EPS</span><span class="p">:</span><span class="mi">4326</span><span class="p">)</span>
+<span class="n">Gtm_sec</span><span class="p">:</span>    <span class="n">Time</span> <span class="n">stamp</span> <span class="n">of</span> <span class="n">measuring</span> <span class="ow">in</span> <span class="n">seconds</span>
 </pre></div>
 </div>
 <div class="admonition tip">
@@ -181,9 +200,9 @@ default.</p>
 dialog, it is allowed by the <code class="docutils literal"><span class="pre">Show</span></code> button. Input layer is also
 styled and it gives user the opportunity to compary the shifted values
 with the original ones.</p>
-<div class="figure align-center" id="id2">
+<div class="figure align-center" id="id4">
 <img alt="_images/screenshot-styled.png" src="_images/screenshot-styled.png" />
-<p class="caption"><span class="caption-text">Figure 2: Styled input.</span></p>
+<p class="caption"><span class="caption-text">Figure 4: Styled input.</span></p>
 </div>
 </div>
 <div class="section" id="shift">
@@ -192,9 +211,9 @@ with the original ones.</p>
 value of shift and can choose units - values, meters (distance) or
 seconds (variable distance considering current velocity). Points are
 shifted on a trajectory.</p>
-<div class="figure align-center" id="id3">
+<div class="figure align-center" id="id5">
 <img alt="_images/screenshot-shifted.png" src="_images/screenshot-shifted.png" />
-<p class="caption"><span class="caption-text">Figure 3: Red ones shifted by 1.14 seconds.</span></p>
+<p class="caption"><span class="caption-text">Figure 5: Red ones shifted by 1.14 seconds.</span></p>
 </div>
 </div>
 </div>

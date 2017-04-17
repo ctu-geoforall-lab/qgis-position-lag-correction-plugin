@@ -1,7 +1,26 @@
 User Manual
 ***********
 
-.. figure:: images/screenshot-gui.png
+Introduction
+----------------
+
+The plugin was developed to solve the GPS lag issue occuring especially during airborne mesurements. For example - for one second one second measurement the plane / helicopter flies distance of several tens of meters. 
+
+.. figure:: images/001_GPS_lag-flight.png
+
+   GPS lag occurrence.
+
+The plugin allows user to correct a such delay of points defined by GPS coordinates in QGIS by shifting the points by values, constant distance or by constant time (variable distance considering current velocity). For calculating distances the plugin uses WGS84 reference ellipsoid (EPSG:4326).
+
+.. figure:: images/002_GPS_lag_correction.png
+
+   GPS lag correction.
+
+You can use constant shift value if you know (of have calculated) delay for your instrument. Alternatively you can adjust the shift manually in more steps following the visual output and your expert judgement.
+
+The plugin takes input data in CSV (more in next section) and allows shift by number of points, time or distance. Shifted data are in CSV file again but you can also save them in other format directly from QGIS.
+   
+.. figure:: images/003_plugin_GUI.png
 
    Plugin GUI.
 
