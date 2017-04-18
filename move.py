@@ -25,17 +25,16 @@
 from qgis.core import QgsDistanceArea, QgsPoint
 from math import sqrt, pi, pow, fabs, sin, cos, tan, ceil
 
-import time
-
 
 class MoveError(StandardError):
     pass
 
 
 class Move:
-    def __init__(self, inputfile, outputfile):
+    def __init__(self, inputfile, outputfile, ellipsoid):
         self.inputfile = open(inputfile, 'rb')
         self.outputfile = open(outputfile, 'wb')
+        self.ellipsoid = ellipsoid
 
     def _close(self):
         for f in (self.inputfile, self.outputfile):
@@ -180,7 +179,7 @@ class Move:
         self.outputfile.write(header)
 
         d = QgsDistanceArea()
-        d.setEllipsoid('WGS84')
+        d.setEllipsoid(self.ellipsoid)
         d.setEllipsoidalMode(True)
         d.ellipsoid()
         a = 6378137.0  # WGS84 ellipsoid parametres
@@ -374,7 +373,7 @@ class Move:
         self.outputfile.write(header)
 
         d = QgsDistanceArea()
-        d.setEllipsoid('WGS84')
+        d.setEllipsoid(self.ellipsoid)
         d.setEllipsoidalMode(True)
         d.ellipsoid()
         a = 6378137.0  # WGS84 ellipsoid parametres

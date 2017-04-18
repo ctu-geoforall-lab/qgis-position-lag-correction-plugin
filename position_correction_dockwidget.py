@@ -27,6 +27,8 @@ import os
 from PyQt4 import QtGui, uic
 from PyQt4.QtCore import pyqtSignal
 from PyQt4.QtGui import QFileDialog, QMessageBox
+from qgis.gui import QgsGenericProjectionSelector
+from qgis.core import QgsCoordinateReferenceSystem
 
 from move import Move, MoveError
 import show_as_layer
@@ -55,6 +57,7 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.outputButton.clicked.connect(self.select_output)
         self.style.clicked.connect(self.select_style)
         self.showInput.clicked.connect(self.show_input)
+        self.ellipsoidSelector.clicked.connect(self.select_ellipsoid)
 
         self.input.textChanged.connect(self.able_solve)  # enable solve button
         self.output.textChanged.connect(self.able_solve)
@@ -127,11 +130,26 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
         show_as_layer.show(self.input.text(), self.stylePath)
 
+    def select_ellipsoid(self):
+        """raise a dialog to choose the desired ellipsoid"""
+
+        projSelector = QgsGenericProjectionSelector()
+        projSelector.exec_()
+
+        crs = QgsCoordinateReferenceSystem()
+        crs.createFromSrsId(projSelector.selectedCrsId())
+
+        if crs.isValid():
+            if crs.ellipsoidAcronym() != '':
+                self.ellipsoidSelector.setText(crs.ellipsoidAcronym())
+            else:
+                self.ellipsoidSelector.setText('WGS84')
+
     def move_by(self):
         """decides which type of move should be used"""
 
         try:
-            move = Move(self.input.text(), self.output.text())
+            move = Move(self.input.text(), self.output.text(), self.ellipsoidSelector.text())
         except IOError as e:
             QMessageBox.critical(None, "Error", "{0}".format(e),
                                  QMessageBox.Abort)
