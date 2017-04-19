@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # build docs
 git checkout gh-pages
+git pull
 rm -rf *
 touch .nojekyll
 git checkout master docs
