@@ -4,8 +4,8 @@ Installation
 There are many ways to install the plugin. The easiest method is to
 install it from the QGIS Plugin repository.
 
-Firstly, you have to open the plugins dialog in QGIS.
-Go to :menuselection:`Plugins --> Manage and Install Plugins`:
+Firstly, you have to open the plugins dialog in QGIS.  Go to
+:menuselection:`Plugins --> Manage and Install Plugins`:
 
 .. figure:: images/install_001_plugins_menu.png
 
