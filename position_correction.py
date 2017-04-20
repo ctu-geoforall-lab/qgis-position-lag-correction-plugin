@@ -70,6 +70,7 @@ class PositionCorrection:
 
         self.pluginIsActive = False
         self.dockwidget = None
+        self.iface = iface
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -203,7 +204,7 @@ class PositionCorrection:
             #    removed on close (see self.onClosePlugin method)
             if self.dockwidget is None:
                 # Create the dockwidget (after translation) and keep reference
-                self.dockwidget = PositionCorrectionDockWidget()
+                self.dockwidget = PositionCorrectionDockWidget(self.iface)
 
             # connect to provide cleanup on closing of dockwidget
         #    self.dockwidget.closingPlugin.connect(self.onClosePlugin)

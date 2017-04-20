@@ -25,12 +25,11 @@
 import os
 
 from PyQt4 import QtGui, uic
-from PyQt4.QtCore import pyqtSignal
-from PyQt4.QtGui import QFileDialog, QMessageBox
-from qgis.gui import QgsGenericProjectionSelector
+from PyQt4.QtCore import pyqtSignal, QThread
+from qgis.gui import QgsGenericProjectionSelector, QgsMessageBar
 from qgis.core import QgsCoordinateReferenceSystem
 
-from move import Move, MoveError
+from move import Move
 import show_as_layer
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -41,7 +40,7 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
     closingPlugin = pyqtSignal()
 
-    def __init__(self, parent=None):
+    def __init__(self, iface, parent=None):
         """Constructor"""
 
         super(PositionCorrectionDockWidget, self).__init__(parent)
@@ -52,6 +51,8 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
         self.stylePath = None
+
+        self.iface = iface
 
         self.inputButton.clicked.connect(self.select_input)
         self.outputButton.clicked.connect(self.select_output)
@@ -64,12 +65,12 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.value.textChanged.connect(self.able_solve)
         self.input.textChanged.connect(self.able_show)  # enable showInput btn
 
-        self.solve.clicked.connect(self.move_by)
+        self.solve.clicked.connect(self.start_computing)
 
     def select_input(self):
         """select csv file to edit"""
 
-        self.filePath = QFileDialog.getOpenFileName(
+        self.filePath = QtGui.QFileDialog.getOpenFileName(
             self, 'Load file', '.', 'Comma Seperated Values (*.csv)')
 
         if self.filePath:
@@ -83,7 +84,7 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
     def select_style(self):
         """select qml style file"""
 
-        self.stylePath = QFileDialog.getOpenFileName(
+        self.stylePath = QtGui.QFileDialog.getOpenFileName(
             self, 'Load file (Cancel causes "No style")',
             os.path.join(os.path.dirname(__file__), 'styles'),
             'Qt Meta Language (*.qml)')
@@ -100,7 +101,7 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
     def select_output(self):
         """choose directory to save returned data"""
 
-        self.outputDir = QFileDialog.getExistingDirectory(self,
+        self.outputDir = QtGui.QFileDialog.getExistingDirectory(self,
                                                           'Save to file')
         if not self.outputDir:
             return
@@ -145,50 +146,66 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             else:
                 self.ellipsoidSelector.setText('WGS84')
 
-    def move_by(self):
-        """decides which type of move should be used"""
+    def start_computing(self):
+        """computing called in new thread and showing a progressBar"""
 
-        try:
-            move = Move(self.input.text(), self.output.text(), self.ellipsoidSelector.text())
-        except IOError as e:
-            QMessageBox.critical(None, "Error", "{0}".format(e),
-                                 QMessageBox.Abort)
-            return
+        computation = Move(self.input.text(), self.output.text(),
+                      self.ellipsoidSelector.text(), self.units.currentText(),
+                      self.value.text())
 
-        try:
-            if self.units.currentText() == 'values':
-                try:
-                    move.by_points(int(self.value.text()))
-                except ValueError as e:
-                    QMessageBox.critical(None,
-                                         "ERROR: Invalid number of values",
-                                         "{0}".format(e), QMessageBox.Abort)
-                    return
+        messageBar = self.iface.messageBar().createMessage('Computing...')
+        progressBar = QtGui.QProgressBar()
+        cancelButton = QtGui.QPushButton()
+        cancelButton.setText('Cancel')
+        messageBar.layout().addWidget(progressBar)
+        messageBar.layout().addWidget(cancelButton)
 
-            elif self.units.currentText() == 'meters':
-                try:
-                    move.by_distance(float(self.value.text()))
-                except ValueError as e:
-                    QMessageBox.critical(None,
-                                         "ERROR: Invalid number of values",
-                                         "{0}".format(e), QMessageBox.Abort)
-                    return
+        computationThread = QThread(self)
+        computation.moveToThread(computationThread)
+        computation.finished.connect(self.computing_finished)
+        computation.progress.connect(progressBar.setValue)
+        cancelButton.clicked.connect(self.cancel_computing)
+        computationThread.started.connect(computation.shift)
+        computation.error.connect(self.value_error)
 
-            elif self.units.currentText() == 'seconds':
-                try:
-                    move.by_seconds(float(self.value.text()))
-                except ValueError as e:
-                    QMessageBox.critical(None,
-                                         "ERROR: Invalid number of values",
-                                         "{0}".format(e), QMessageBox.Abort)
-                    return
+        self.iface.messageBar().pushWidget(messageBar,
+                                           self.iface.messageBar().INFO)
 
-        except MoveError as e:
-            QMessageBox.critical(None, "Error", "{0}".format(e),
-                                 QMessageBox.Abort)
-            return
+        if not computationThread.isRunning():
+            computationThread.start()
+
+        self.computation = computation
+        self.computationThread = computationThread
+        self.messageBar = messageBar
+
+    def computing_finished(self):
+        """show new layer and clean up after threads"""
 
         show_as_layer.show(self.output.text(), self.stylePath)
+
+        self.computation.deleteLater()
+        self.computationThread.quit()
+        self.computationThread.wait()
+        self.computationThread.deleteLater()
+        self.iface.messageBar().popWidget(self.messageBar)
+
+    def cancel_computing(self):
+        """clicked on the Cancel button in messageBar"""
+
+        self.computation.abort = True
+
+    def value_error(self, e):
+        """error in input values"""
+
+        QtGui.QMessageBox.critical(None,
+                             "ERROR: Invalid number of values",
+                             "{0}".format(e), QtGui.QMessageBox.Abort)
+
+        self.computation.deleteLater()
+        self.computationThread.quit()
+        self.computationThread.wait()
+        self.computationThread.deleteLater()
+        self.iface.messageBar().popWidget(self.messageBar)
 
     def close_event(self, event):  # closeEvent
 

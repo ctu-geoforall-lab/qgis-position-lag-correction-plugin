@@ -24,17 +24,67 @@
 
 from qgis.core import QgsDistanceArea, QgsPoint
 from math import sqrt, pi, pow, fabs, sin, cos, tan, ceil
+from PyQt4.QtCore import QObject, pyqtSignal
+from PyQt4.QtGui import QMessageBox
 
 
 class MoveError(StandardError):
     pass
 
 
-class Move:
-    def __init__(self, inputfile, outputfile, ellipsoid):
+class Move(QObject):
+
+    finished = pyqtSignal()
+    progress = pyqtSignal(float)
+    error = pyqtSignal(Exception)
+
+    def __init__(self, inputfile, outputfile, ellipsoid, units, value):
+        QObject.__init__(self)
+
         self.inputfile = open(inputfile, 'rb')
         self.outputfile = open(outputfile, 'wb')
         self.ellipsoid = ellipsoid
+        self.units = units
+        self.value = value
+
+        self.abort = False
+
+        self.inputfile.seek(0,2)
+        self.length = self.inputfile.tell()
+        self.inputfile.seek(0, 0)
+
+
+    def shift(self):
+        """decide which type of shift should be used"""
+
+        try:
+            if self.units == 'values':
+                try:
+                    self.by_points(int(self.value))
+                except ValueError as e:
+                    self.error.emit(e)
+                    return
+
+            elif self.units == 'meters':
+                try:
+                    self.by_distance(float(self.value))
+                except ValueError as e:
+                    self.error.emit(e)
+                    return
+
+            elif self.units == 'seconds':
+                try:
+                    self.by_seconds(float(self.value))
+                except ValueError as e:
+                    self.error.emit(e)
+                    return
+
+        except MoveError as e:
+            QMessageBox.critical(None, "Error", "{0}".format(e),
+                                 QMessageBox.Abort)
+            return
+
+        self.finished.emit()
 
     def _close(self):
         for f in (self.inputfile, self.outputfile):
@@ -119,6 +169,9 @@ class Move:
             outline = self.inputfile.readline()
 
             while outline:
+                if self.abort is True:
+                    break
+
                 linePos = self.inputfile.tell()
                 for i in range(value):
                     line = self.inputfile.readline()
@@ -137,6 +190,9 @@ class Move:
                 self.inputfile.seek(linePos)
                 outline = self.inputfile.readline()
 
+                self.progress.emit(
+                    float(linePos) / float(self.length) * 100)
+
         elif value < 0:
             line = []
             for i in range(abs(value)+1):
@@ -144,6 +200,9 @@ class Move:
                 line[i] = line[i].split(',')
 
             while line[i] != ['']:
+                if self.abort is True:
+                    break
+
                 outline = 1*line[i]
                 outline[len(numberOfLat_degColumn)-1] = line[0][
                     len(numberOfLat_degColumn)-1]
@@ -156,11 +215,20 @@ class Move:
                 line.append(self.inputfile.readline())
                 line[i] = line[i].split(',')
 
+                self.progress.emit(
+                    float(self.outputfile.tell()) / float(self.length) * 100)
+
         else:
             a = self.inputfile.readline()
             while a:
+                if self.abort is True:
+                    break
+
                 self.outputfile.write(a)
                 a = self.inputfile.readline()
+
+                self.progress.emit(
+                    float(self.outputfile.tell()) / float(self.length) * 100)
 
         self._close()
 
@@ -190,6 +258,9 @@ class Move:
             linePos = self.inputfile.tell()
             line1 = line1.split(',')
             while line1:
+                if self.abort is True:
+                    break
+
                 self.inputfile.seek(linePos)
                 line2 = self.inputfile.readline()
                 linePos = self.inputfile.tell()
@@ -257,6 +328,9 @@ class Move:
                     else:
                         break
 
+                    self.progress.emit(
+                        float(linePos) / float(self.length) * 100)
+
                 else:
                     break
 
@@ -286,6 +360,9 @@ class Move:
                 allDist = allDist+d.computeDistanceBearing(p1, p2)[0]
 
             while line[len(line)-1] != ['']:
+                if self.abort is True:
+                    break
+
                 allDist = 0
                 for i in reversed(range(1, len(line))):
                     p1 = QgsPoint(float(line[i-1][len(numberOfLonColumn)-1]),
@@ -349,10 +426,20 @@ class Move:
                 line.append(self.inputfile.readline())
                 line[len(line)-1] = line[len(line)-1].split(',')
                 moveDistance = fabs(distance)
+
+                self.progress.emit(
+                    float(self.outputfile.tell()) / float(self.length) * 100)
+
         else:
             while line1:
+                if self.abort is True:
+                    break
+
                 self.outputfile.write(line1)
                 line1 = self.inputfile.readline()
+
+                self.progress.emit(
+                    float(self.outputfile.tell()) / float(self.length) * 100)
 
         self._close()
 
@@ -384,6 +471,9 @@ class Move:
             linePos = self.inputfile.tell()
             line1 = line1.split(',')
             while line1:
+                if self.abort is True:
+                    break
+
                 self.inputfile.seek(linePos)
                 line2 = self.inputfile.readline()
                 linePos = self.inputfile.tell()
@@ -452,6 +542,8 @@ class Move:
                 else:
                     break
 
+                self.progress.emit(float(linePos)/float(self.length)*100)
+
         elif seconds < 0:
             line = []
             line.append(line1)
@@ -469,6 +561,9 @@ class Move:
                 allSecs = allSecs+(float(line[i][len(numberOfSecColumn)-1])-float(line[i-1][len(numberOfSecColumn)-1]))
 
             while line[len(line)-1] != ['']:
+                if self.abort is True:
+                    break
+
                 allSecs = 0
                 for i in reversed(range(1, len(line))):
                     allSecs = allSecs+(float(line[i][len(numberOfSecColumn)-1])-float(line[i-1][len(numberOfSecColumn)-1]))
@@ -530,9 +625,18 @@ class Move:
                 line[len(line)-1] = line[len(line)-1].split(',')
                 moveTime = 1*seconds
 
+                self.progress.emit(
+                    float(self.outputfile.tell()) / float(self.length) * 100)
+
         else:
             while line1:
+                if self.abort is True:
+                    break
+
                 self.outputfile.write(line1)
                 line1 = self.inputfile.readline()
+
+                self.progress.emit(
+                    float(self.outputfile.tell()) / float(self.length) * 100)
 
         self._close()
