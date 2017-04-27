@@ -53,6 +53,7 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.stylePath = None
 
         self.iface = iface
+        self.computationRunning = False
 
         self.inputButton.clicked.connect(self.select_input)
         self.outputButton.clicked.connect(self.select_output)
@@ -65,7 +66,7 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.value.textChanged.connect(self.able_solve)
         self.input.textChanged.connect(self.able_show)  # enable showInput btn
 
-        self.solve.clicked.connect(self.start_computing)
+        self.solve.clicked.connect(self.solve_clicked)
 
     def select_input(self):
         """select csv file to edit"""
@@ -126,6 +127,12 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         else:
             self.showInput.setEnabled(False)
 
+    def solve_clicked(self):
+        """call computing"""
+
+        if self.computationRunning is not True:
+            self.start_computing()
+
     def show_input(self):
         """show input csv as layer"""
 
@@ -172,6 +179,7 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
                                            self.iface.messageBar().INFO)
 
         if not computationThread.isRunning():
+            self.computationRunning = True
             computationThread.start()
 
         self.computation = computation
@@ -181,7 +189,8 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
     def computing_finished(self):
         """show new layer and clean up after threads"""
 
-        show_as_layer.show(self.output.text(), self.stylePath)
+        if self.computation.abort is not True:
+            show_as_layer.show(self.output.text(), self.stylePath)
 
         self.computation.deleteLater()
         self.computationThread.quit()
@@ -189,10 +198,13 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.computationThread.deleteLater()
         self.iface.messageBar().popWidget(self.messageBar)
 
+        self.computationRunning = False
+
     def cancel_computing(self):
         """clicked on the Cancel button in messageBar"""
 
         self.computation.abort = True
+        os.remove(self.output.text())
 
     def value_error(self, e):
         """error in input values"""
@@ -206,6 +218,8 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.computationThread.wait()
         self.computationThread.deleteLater()
         self.iface.messageBar().popWidget(self.messageBar)
+
+        self.computationRunning = False
 
     def close_event(self, event):  # closeEvent
 
