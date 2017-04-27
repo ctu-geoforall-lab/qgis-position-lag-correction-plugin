@@ -90,6 +90,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#input-and-output">Input and output</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#input-data-structure">Input data structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reference-ellipsoid">Reference ellipsoid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#styling">Styling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#shift">Shift</a></li>
 </ul>
@@ -154,8 +155,7 @@ several tens of meters.</p>
 <p>The plugin allows user to correct a such delay of points defined by
 GPS coordinates in QGIS by shifting the points by values, constant
 distance or by constant time (variable distance considering current
-velocity). For calculating distances the plugin uses WGS84 reference
-ellipsoid (EPSG:4326).</p>
+velocity).</p>
 <div class="figure align-center" id="id2">
 <img alt="_images/002_GPS_lag_correction.png" src="_images/002_GPS_lag_correction.png" />
 <p class="caption"><span class="caption-text">Figure 2: GPS lag correction.</span></p>
@@ -190,8 +190,8 @@ intended to choose folder, not file.</p>
 <p>The plugin works with data in CSV format and requires certain fields
 to work properly:</p>
 <div class="highlight-python"><div class="highlight"><pre>Input CSV contents
-lat_deg:    Latitude of point (EPSG:4326)
-lon_deg:    Longitude of point (EPS:4326)
+lat_deg:    Latitude of point
+lon_deg:    Longitude of point
 Gtm_sec:    Time stamp of measuring in seconds
 </pre></div>
 </div>
@@ -213,7 +213,18 @@ data. Structure of provided files is following:</p>
 </pre></div>
 </div>
 </div></blockquote>
-<p>There is also an optional possibility of styling your points for better visualisation.</p>
+<p>There is also an optional possibility of styling your points for better
+visualisation.</p>
+</div>
+<div class="section" id="reference-ellipsoid">
+<h2>Reference ellipsoid<a class="headerlink" href="#reference-ellipsoid" title="Permalink to this headline">¶</a></h2>
+<p>User is allowed to choose a reference ellipsoid by clicking at the ellipsoid
+button. It opens a CRS selector dialog where user can pick the used ellipsoid.
+Ellipsoid is drawn out of the CRS after choosing one. For not-known
+ellipsoids it returns WGS84 (EPSG: 4326) by default.</p>
+<div class="figure align-center">
+<img alt="_images/006_CRS_selector.png" src="_images/006_CRS_selector.png" />
+</div>
 </div>
 <div class="section" id="styling">
 <h2>Styling<a class="headerlink" href="#styling" title="Permalink to this headline">¶</a></h2>
@@ -231,7 +242,7 @@ styles. Styling is based on the value in column <code class="docutils literal"><
 default.</p>
 <div class="figure align-center" id="id4">
 <img alt="_images/005_style_example.png" src="_images/005_style_example.png" />
-<p class="caption"><span class="caption-text">Figure 4: Predefined style example.</span></p>
+<p class="caption"><span class="caption-text">Figure 5: Predefined style example.</span></p>
 </div>
 <p>If user prefers to visualise both the input and the output from one
 dialog, it is allowed by the <code class="docutils literal"><span class="pre">Show</span></code> button. Input layer is also
@@ -239,7 +250,7 @@ styled and it gives user the opportunity to compare the shifted values
 with the original ones.</p>
 <div class="figure align-center" id="id5">
 <img alt="_images/004_data_shift_example.png" src="_images/004_data_shift_example.png" />
-<p class="caption"><span class="caption-text">Figure 5: Comparison of two screenshots - upper is original, lower is shifted.</span></p>
+<p class="caption"><span class="caption-text">Figure 6: Comparison of two screenshots - upper is original, lower is shifted.</span></p>
 </div>
 </div>
 <div class="section" id="shift">
@@ -250,7 +261,7 @@ seconds (variable distance considering current velocity). Points are
 shifted on a trajectory.</p>
 <div class="figure align-center" id="id6">
 <img alt="_images/screenshot-shifted.png" src="_images/screenshot-shifted.png" />
-<p class="caption"><span class="caption-text">Figure 6: Red ones shifted by 1.14 seconds.</span></p>
+<p class="caption"><span class="caption-text">Figure 7: Red ones shifted by 1.14 seconds.</span></p>
 </div>
 </div>
 </div>

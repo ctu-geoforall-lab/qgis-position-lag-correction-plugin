@@ -7,7 +7,7 @@ airborne monitoring when even for one second measurement the plane /
 helicopter flies distance of several tens of meters. User is allowed
 to shift points by values, constant distance or by constant time
 (variable distance considering current velocity). For calculating
-distances the plugin uses WGS84 reference ellipsoid (EPSG:4326).
+distances user is allowed to choose a reference ellipsoid.
 
 This plugin was developed on the demand of National Radiation
 Protection Institute (`www.suro.cz <http://www.suro.cz>`__) for

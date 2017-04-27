@@ -16,8 +16,7 @@ several tens of meters.
 The plugin allows user to correct a such delay of points defined by
 GPS coordinates in QGIS by shifting the points by values, constant
 distance or by constant time (variable distance considering current
-velocity). For calculating distances the plugin uses WGS84 reference
-ellipsoid (EPSG:4326).
+velocity).
 
 .. figure:: images/002_GPS_lag_correction.png
 
@@ -60,8 +59,8 @@ to work properly:
 ::
 
    Input CSV contents
-   lat_deg:    Latitude of point (EPSG:4326)
-   lon_deg:    Longitude of point (EPS:4326)
+   lat_deg:    Latitude of point
+   lon_deg:    Longitude of point
    Gtm_sec:    Time stamp of measuring in seconds
 
 .. tip:: See sample data in `plugin repository
@@ -81,7 +80,18 @@ data. Structure of provided files is following:
     900,403,124,211,49.311470,15.979719,683.90,24637,1378.70
     900,404,124,211,49.310998,15.979276,683.70,24638,1268.23
 
-There is also an optional possibility of styling your points for better visualisation.
+There is also an optional possibility of styling your points for better
+visualisation.
+
+Reference ellipsoid
+-------------------
+
+User is allowed to choose a reference ellipsoid by clicking at the ellipsoid
+button. It opens a CRS selector dialog where user can pick the used ellipsoid.
+Ellipsoid is drawn out of the CRS after choosing one. For not-known
+ellipsoids it returns WGS84 (EPSG: 4326) by default.
+
+.. figure:: images/006_CRS_selector.png
 
 Styling
 ----------------
