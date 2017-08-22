@@ -13,6 +13,8 @@
 
   
   
+  
+  
 
   
 
@@ -30,6 +32,9 @@
   
 
   
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="QGIS Plugin GPS Position Lag Correction 0.9 documentation" href="index.html"/>
         <link rel="next" title="Acknowledgement" href="acknowledgement.html"/>
         <link rel="prev" title="Installation" href="installation.html"/> 
@@ -41,6 +46,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -84,9 +90,12 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">User Manual</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User Manual</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#input-and-output">Input and output</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#input-data-structure">Input data structure</a></li>
@@ -108,8 +117,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">QGIS Plugin GPS Position Lag Correction</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">QGIS Plugin GPS Position Lag Correction</a>
+        
       </nav>
 
 
@@ -118,23 +129,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>User Manual</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>User Manual</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
-            <a href="_sources/user-manual.txt" rel="nofollow"> View page source</a>
+            
+            <a href="_sources/user-manual.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -189,10 +217,10 @@ intended to choose folder, not file.</p>
 <h2>Input data structure<a class="headerlink" href="#input-data-structure" title="Permalink to this headline">¶</a></h2>
 <p>The plugin works with data in CSV format and requires certain fields
 to work properly:</p>
-<div class="highlight-python"><div class="highlight"><pre>Input CSV contents
-lat_deg:    Latitude of point
-lon_deg:    Longitude of point
-Gtm_sec:    Time stamp of measuring in seconds
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Input</span> <span class="n">CSV</span> <span class="n">contents</span>
+<span class="n">lat_deg</span><span class="p">:</span>    <span class="n">Latitude</span> <span class="n">of</span> <span class="n">point</span>
+<span class="n">lon_deg</span><span class="p">:</span>    <span class="n">Longitude</span> <span class="n">of</span> <span class="n">point</span>
+<span class="n">Gtm_sec</span><span class="p">:</span>    <span class="n">Time</span> <span class="n">stamp</span> <span class="n">of</span> <span class="n">measuring</span> <span class="ow">in</span> <span class="n">seconds</span>
 </pre></div>
 </div>
 <div class="admonition tip">
@@ -206,7 +234,7 @@ tests&#8221; of the plugin. Values in &#8220;measurement&#8221; are also fiction
 variable but retains relative value differences from real monitoring
 data. Structure of provided files is following:</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span class="n">Line</span><span class="p">,</span><span class="n">RECS</span><span class="p">,</span><span class="n">UsedAlt_m</span><span class="p">,</span><span class="n">GHead_deg</span><span class="p">,</span><span class="n">Lat_deg</span><span class="p">,</span><span class="n">Lon_deg</span><span class="p">,</span><span class="n">Galt_m</span><span class="p">,</span><span class="n">Gtm_sec</span><span class="p">,</span><span class="n">measurement</span>
+<div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Line</span><span class="p">,</span><span class="n">RECS</span><span class="p">,</span><span class="n">UsedAlt_m</span><span class="p">,</span><span class="n">GHead_deg</span><span class="p">,</span><span class="n">Lat_deg</span><span class="p">,</span><span class="n">Lon_deg</span><span class="p">,</span><span class="n">Galt_m</span><span class="p">,</span><span class="n">Gtm_sec</span><span class="p">,</span><span class="n">measurement</span>
 <span class="mi">900</span><span class="p">,</span><span class="mi">402</span><span class="p">,</span><span class="mi">125</span><span class="p">,</span><span class="mi">211</span><span class="p">,</span><span class="mf">49.311943</span><span class="p">,</span><span class="mf">15.980162</span><span class="p">,</span><span class="mf">684.40</span><span class="p">,</span><span class="mi">24636</span><span class="p">,</span><span class="mf">1217.71</span>
 <span class="mi">900</span><span class="p">,</span><span class="mi">403</span><span class="p">,</span><span class="mi">124</span><span class="p">,</span><span class="mi">211</span><span class="p">,</span><span class="mf">49.311470</span><span class="p">,</span><span class="mf">15.979719</span><span class="p">,</span><span class="mf">683.90</span><span class="p">,</span><span class="mi">24637</span><span class="p">,</span><span class="mf">1378.70</span>
 <span class="mi">900</span><span class="p">,</span><span class="mi">404</span><span class="p">,</span><span class="mi">124</span><span class="p">,</span><span class="mi">211</span><span class="p">,</span><span class="mf">49.310998</span><span class="p">,</span><span class="mf">15.979276</span><span class="p">,</span><span class="mf">683.70</span><span class="p">,</span><span class="mi">24638</span><span class="p">,</span><span class="mf">1268.23</span>
@@ -268,15 +296,18 @@ shifted on a trajectory.</p>
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="acknowledgement.html" class="btn btn-neutral float-right" title="Acknowledgement" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="acknowledgement.html" class="btn btn-neutral float-right" title="Acknowledgement" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="installation.html" class="btn btn-neutral" title="Installation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="installation.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -310,7 +341,8 @@ shifted on a trajectory.</p>
             VERSION:'0.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>
