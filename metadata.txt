@@ -7,11 +7,11 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=GPS Position Lag Correction
+name=GPS Position Lag Correction QGIS Plugin
 qgisMinimumVersion=2.8
 description=Aerial Data Shift
-version=0.9
-author=Ondrej Pesek
+version=2.0alpha
+author=Ondrej Pesek (CTU GeoForAll Lab)
 email=pesej.ondrek@gmail.com
 
 about=The plugin allows user to correct a record delay of points GPS coordinates in QGIS. This delay occurs especially during airborne monitoring where even for one second measurement the plane / helicopter flies distance of several tens of meters. User is allowed to shift points by values, by constant distance or by constant time (variable distance considering current velocity). Ellipsoid WGS84 (EPSG:4326) is used as a reference ellipsoid.
@@ -34,7 +34,7 @@ homepage=https://ctu-geoforall-lab.github.io/qgis-position-lag-correction-plugin
 category=Plugins
 icon=icon.png
 # experimental flag
-experimental=False
+experimental=True
 
 # deprecated flag (applies to the whole plugin, not just a single version)
 deprecated=False
