@@ -14,9 +14,7 @@ version=2.0alpha
 author=Ondrej Pesek (CTU GeoForAll Lab)
 email=pesej.ondrek@gmail.com
 
-about=The plugin allows user to correct a record delay of points GPS coordinates in QGIS. This delay occurs especially during airborne monitoring where even for one second measurement the plane / helicopter flies distance of several tens of meters. User is allowed to shift points by values, by constant distance or by constant time (variable distance considering current velocity). Ellipsoid WGS84 (EPSG:4326) is used as a reference ellipsoid.
-
-    This plugin was developed on the demand of National Radiation Protection Institute (www.suro.cz) for processing airborne radiation monitoring data.
+about=The plugin allows user to correct a record delay of points GPS coordinates in QGIS. This delay occurs especially during airborne monitoring where even for one second measurement the plane / helicopter flies distance of several tens of meters. User is allowed to shift points by values, by constant distance or by constant time (variable distance considering current velocity). Ellipsoid WGS84 (EPSG:4326) is used as a reference ellipsoid. This plugin was developed by CTU GeoForAll Lab on the demand of National Radiation Protection Institute (www.suro.cz) for processing airborne radiation monitoring data.
 
 tracker=https://github.com/ctu-geoforall-lab/qgis-position-lag-correction-plugin/issues
 repository=https://github.com/ctu-geoforall-lab/qgis-position-lag-correction-plugin
