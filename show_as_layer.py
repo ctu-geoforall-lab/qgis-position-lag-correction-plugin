@@ -22,7 +22,7 @@
 """
 
 import os
-from qgis.core import QgsVectorLayer, QgsMapLayerRegistry
+from qgis.core import QgsVectorLayer, QgsProject
 
 def show(filePath,stylePath):
     """show csv as layer"""
@@ -35,4 +35,4 @@ def show(filePath,stylePath):
     if stylePath:
         stylePath = os.path.join(stylePath).replace('\\','/')
         layer.loadNamedStyle(stylePath)
-    QgsMapLayerRegistry.instance().addMapLayer(layer)
+    QgsProject.instance().addMapLayer(layer)

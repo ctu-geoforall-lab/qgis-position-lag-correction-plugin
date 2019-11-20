@@ -43,8 +43,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'QGIS Plugin GPS Position Lag Correction QGIS Plugin'
-copyright = u'2016-2017, CTU GeoForAll Lab'
+project = 'QGIS Plugin GPS Position Lag Correction QGIS Plugin'
+copyright = '2016-2017, CTU GeoForAll Lab'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -181,8 +181,8 @@ htmlhelp_basename = 'TemplateClassdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'GPSPositionLagCorrection.tex', u'GPS Position Lag Correction Documentation',
-   u'Ondřej Pešek', 'manual'),
+  ('index', 'GPSPositionLagCorrection.tex', 'GPS Position Lag Correction Documentation',
+   'Ondřej Pešek', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -214,6 +214,6 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'TemplateClass', u'GPS Position Lag Correction Documentation',
-     [u'Ondřej Pešek'], 1)
+    ('index', 'TemplateClass', 'GPS Position Lag Correction Documentation',
+     ['Ondřej Pešek'], 1)
 ]
