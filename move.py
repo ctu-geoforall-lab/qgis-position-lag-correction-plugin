@@ -280,7 +280,7 @@ class Move(QObject):
                                   float(line1[len(numberOfLatColumn)-1]))
                     p2 = QgsPointXY(float(line2[len(numberOfLonColumn)-1]),
                                   float(line2[len(numberOfLatColumn)-1]))
-                    l = d.bearing(p1, p2)
+                    l = d.measureLine(p1, p2)
 
                     #print("MD, L", moveDistance, l)
 
@@ -302,7 +302,7 @@ class Move(QObject):
                                 p2 = QgsPointXY(
                                     float(line2[len(numberOfLonColumn)-1]),
                                     float(line2[len(numberOfLatColumn)-1]))
-                                l = d.bearing(p1, p2)
+                                l = d.measureLine(p1, p2)
                         else:
                             #print("BREAK")
                             #logfile.close()
@@ -362,7 +362,8 @@ class Move(QObject):
                           float(line[0][len(numberOfLatColumn)-1]))
             p2 = QgsPointXY(float(line[1][len(numberOfLonColumn)-1]),
                           float(line[1][len(numberOfLatColumn)-1]))
-            allDist = d.bearing(p1, p2)
+            allDist = d.measureLine(p1, p2)
+
             while moveDistance > allDist:
                 line.append(self.inputfile.readline().split(','))
                 i = i+1
@@ -372,7 +373,7 @@ class Move(QObject):
                               float(line[i-1][len(numberOfLatColumn)-1]))
                 p2 = QgsPointXY(float(line[i][len(numberOfLonColumn)-1]),
                               float(line[i][len(numberOfLatColumn)-1]))
-                allDist = allDist+d.bearing(p1, p2)
+                allDist = allDist+d.measureLine(p1, p2)
 
             while line[len(line)-1] != ['']:
                 if self.abort is True:
@@ -384,7 +385,7 @@ class Move(QObject):
                                   float(line[i-1][len(numberOfLatColumn)-1]))
                     p2 = QgsPointXY(float(line[i][len(numberOfLonColumn)-1]),
                                   float(line[i][len(numberOfLatColumn)-1]))
-                    allDist = allDist+d.bearing(p1, p2)
+                    allDist = allDist+d.measureLine(p1, p2)
                     if fabs(moveDistance) <= allDist:
                         for x in range(i-1):
                             del line[0]
@@ -398,7 +399,7 @@ class Move(QObject):
 
                     if p1 != p2:
                         aziA = d.bearing(p2, p1)
-                        l = d.bearing(p1, p2)
+                        l = d.measureLine(p1, p2)
 
                         if moveDistance > l:
                             moveDistance = moveDistance-l
@@ -505,7 +506,7 @@ class Move(QObject):
 
                         if p1 != p2:
                             aziA = d.bearing(p1, p2)
-                            l = d.bearing(p1, p2)
+                            l = d.measureLine(p1, p2)
 
                             if moveTime > (float(line2[len(numberOfSecColumn)-1])-float(line1[len(numberOfSecColumn)-1])):
                                 moveTime = moveTime-(float(line2[len(numberOfSecColumn)-1])-float(line1[len(numberOfSecColumn)-1]))
@@ -594,7 +595,7 @@ class Move(QObject):
 
                     if p1 != p2:
                         aziA = d.bearing(p2, p1)
-                        l = d.bearing(p1, p2)
+                        l = d.measureLine(p1, p2)
 
                         if moveTime < -(float(line[i][len(numberOfSecColumn)-1])-float(line[i-1][len(numberOfSecColumn)-1])):
                             moveTime = moveTime+(float(line[i][len(numberOfSecColumn)-1])-float(line[i-1][len(numberOfSecColumn)-1]))
