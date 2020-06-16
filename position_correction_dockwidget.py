@@ -145,8 +145,7 @@ class PositionCorrectionDockWidget(QDockWidget, FORM_CLASS):
         projSelector = QgsProjectionSelectionDialog()
         projSelector.exec_()
 
-        crs = QgsCoordinateReferenceSystem()
-        crs.createFromSrsId(projSelector.selectedCrsId())
+        crs = projSelector.crs()
 
         if crs.isValid():
             if crs.ellipsoidAcronym() != '':
