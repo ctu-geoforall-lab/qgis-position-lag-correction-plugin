@@ -24,19 +24,20 @@
 
 import os
 
-from PyQt4 import QtGui, uic
-from PyQt4.QtCore import pyqtSignal, QThread
-from qgis.gui import QgsGenericProjectionSelector, QgsMessageBar
-from qgis.core import QgsCoordinateReferenceSystem
+from qgis.PyQt import QtGui, uic
+from qgis.PyQt.QtCore import pyqtSignal, QThread
+from qgis.PyQt.QtWidgets import QDockWidget, QFileDialog, QProgressBar, QPushButton
+from qgis.gui import QgsProjectionSelectionDialog, QgsMessageBar
+from qgis.core import QgsCoordinateReferenceSystem, Qgis
 
-from move import Move
-import show_as_layer
+from .move import Move
+from . import show_as_layer
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'position_correction_dockwidget_base.ui'))
 
 
-class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
+class PositionCorrectionDockWidget(QDockWidget, FORM_CLASS):
 
     closingPlugin = pyqtSignal()
 
@@ -71,27 +72,27 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
     def select_input(self):
         """select csv file to edit"""
 
-        self.filePath = QtGui.QFileDialog.getOpenFileName(
+        self.filePath = QFileDialog.getOpenFileName(
             self, 'Load file', '.', 'Comma Seperated Values (*.csv)')
 
         if self.filePath:
-            self.filePath = os.path.normpath(self.filePath)
+            self.filePath = os.path.normpath(self.filePath[0])
         else:
             return
 
         self.input.setText(self.filePath)
-        self.output.setText(self.filePath[:-4]+u'_shifted.csv')
+        self.output.setText(self.filePath[:-4]+'_shifted.csv')
 
     def select_style(self):
         """select qml style file"""
 
-        self.stylePath = QtGui.QFileDialog.getOpenFileName(
+        self.stylePath = QFileDialog.getOpenFileName(
             self, 'Load file (Cancel causes "No style")',
             os.path.join(os.path.dirname(__file__), 'styles'),
             'Qt Meta Language (*.qml)')
 
         if self.stylePath:
-            self.stylePath = os.path.normpath(self.stylePath)
+            self.stylePath = os.path.normpath(self.stylePath[0])
             styleName = self.stylePath.split(os.path.sep)
             styleName = styleName[len(styleName)-1][:-4]
             self.style.setText(styleName)
@@ -108,7 +109,7 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
             return
 
         self.directory = os.path.normpath(self.outputDir) + os.path.sep + \
-                         u'shifted_data.csv'
+                         'shifted_data.csv'
         self.output.setText(self.directory)
 
     def able_solve(self):
@@ -141,11 +142,10 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
     def select_ellipsoid(self):
         """raise a dialog to choose the desired ellipsoid"""
 
-        projSelector = QgsGenericProjectionSelector()
+        projSelector = QgsProjectionSelectionDialog()
         projSelector.exec_()
 
-        crs = QgsCoordinateReferenceSystem()
-        crs.createFromSrsId(projSelector.selectedCrsId())
+        crs = projSelector.crs()
 
         if crs.isValid():
             if crs.ellipsoidAcronym() != '':
@@ -161,8 +161,8 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
                       self.value.text())
 
         messageBar = self.iface.messageBar().createMessage('Computing...')
-        progressBar = QtGui.QProgressBar()
-        cancelButton = QtGui.QPushButton()
+        progressBar = QProgressBar()
+        cancelButton = QPushButton()
         cancelButton.setText('Cancel')
         messageBar.layout().addWidget(progressBar)
         messageBar.layout().addWidget(cancelButton)
@@ -175,8 +175,7 @@ class PositionCorrectionDockWidget(QtGui.QDockWidget, FORM_CLASS):
         computationThread.started.connect(computation.shift)
         computation.error.connect(self.value_error)
 
-        self.iface.messageBar().pushWidget(messageBar,
-                                           self.iface.messageBar().INFO)
+        self.iface.messageBar().pushWidget(messageBar, Qgis.Info)
 
         if not computationThread.isRunning():
             self.computationRunning = True

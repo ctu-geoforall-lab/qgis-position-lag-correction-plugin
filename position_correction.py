@@ -21,13 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, Qt
-from PyQt4.QtGui import QAction, QIcon
+from qgis.PyQt.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, Qt
+from qgis.PyQt.QtGui import QIcon
+from qgis.PyQt.QtWidgets import QAction
 # Initialize Qt resources from file resources.py
-import resources
+from . import resources
 
 # Import the code for the DockWidget
-from position_correction_dockwidget import PositionCorrectionDockWidget
+from .position_correction_dockwidget import PositionCorrectionDockWidget
 import os.path
 
 
@@ -64,7 +65,7 @@ class PositionCorrection:
 
         # Declare instance attributes
         self.actions = []
-        self.menu = self.tr(u'&GPS position lag correction')
+        self.menu = self.tr('&GPS position lag correction')
 
         # print "** INITIALIZING SuroLeveling"
 
@@ -160,7 +161,7 @@ class PositionCorrection:
         icon_path = ':/plugins/qgis-position-lag-correction-plugin/icon.png'
         self.add_action(
             icon_path,
-            text=self.tr(u'GPS position lag correction'),
+            text=self.tr('GPS position lag correction'),
             callback=self.run,
             parent=self.iface.mainWindow())
 
@@ -187,7 +188,7 @@ class PositionCorrection:
 
         for action in self.actions:
             self.iface.removePluginMenu(
-                self.tr(u'&GPS position lag correction'),
+                self.tr('&GPS position lag correction'),
                 action)
             self.iface.removeToolBarIcon(action)
 

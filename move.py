@@ -22,13 +22,13 @@
  ***************************************************************************/
 """
 
-from qgis.core import QgsDistanceArea, QgsPoint
+from qgis.core import QgsDistanceArea, QgsPointXY
 from math import sqrt, pi, pow, fabs, sin, cos, tan, ceil
-from PyQt4.QtCore import QObject, pyqtSignal
-from PyQt4.QtGui import QMessageBox
+from qgis.PyQt.QtCore import QObject, pyqtSignal
+from qgis.PyQt.QtWidgets import QMessageBox
 
 
-class MoveError(StandardError):
+class MoveError(Exception):
     pass
 
 
@@ -41,8 +41,8 @@ class Move(QObject):
     def __init__(self, inputfile, outputfile, ellipsoid, units, value):
         QObject.__init__(self)
 
-        self.inputfile = open(inputfile, 'rb')
-        self.outputfile = open(outputfile, 'wb')
+        self.inputfile = open(inputfile, 'r')
+        self.outputfile = open(outputfile, 'w')
         self.ellipsoid = ellipsoid
         self.units = units
         self.value = value
@@ -82,6 +82,7 @@ class Move(QObject):
         except MoveError as e:
             QMessageBox.critical(None, "Error", "{0}".format(e),
                                  QMessageBox.Abort)
+            self._close()
             return
 
         self.finished.emit()
@@ -248,16 +249,18 @@ class Move(QObject):
 
         d = QgsDistanceArea()
         d.setEllipsoid(self.ellipsoid)
-        d.setEllipsoidalMode(True)
         d.ellipsoid()
         a = 6378137.0  # WGS84 ellipsoid parametres
         e2 = 0.081819190842622
         line1 = self.inputfile.readline()
 
+        #logfile = open("/tmp/log.txt", "w")
+
         if distance > 0:
             linePos = self.inputfile.tell()
             line1 = line1.split(',')
             while line1:
+                #print(line1, self.abort)
                 if self.abort is True:
                     break
 
@@ -268,29 +271,41 @@ class Move(QObject):
                 outline = 1*line1
                 inline = line2.split(',')
 
+                #print(inline, line2, linePos)
+
                 if line2:
+
                     line2 = line2.split(',')
-                    p1 = QgsPoint(float(line1[len(numberOfLonColumn)-1]),
+                    p1 = QgsPointXY(float(line1[len(numberOfLonColumn)-1]),
                                   float(line1[len(numberOfLatColumn)-1]))
-                    p2 = QgsPoint(float(line2[len(numberOfLonColumn)-1]),
+                    p2 = QgsPointXY(float(line2[len(numberOfLonColumn)-1]),
                                   float(line2[len(numberOfLatColumn)-1]))
-                    l = d.computeDistanceBearing(p1, p2)[0]
+                    l = d.measureLine(p1, p2)
+
+                    #print("MD, L", moveDistance, l)
 
                     while moveDistance > l:
+                        #logfile.write(str(moveDistance) + " " + str(l) + "\n")
+                        #print("MD, L, 2", moveDistance, l)
                         if line2:
                             moveDistance = moveDistance-l
                             line1 = 1*line2
                             line2 = self.inputfile.readline()
+
+                            #print(inline, line1, line2, linePos)
+
                             if line2:
                                 line2 = line2.split(',')
-                                p1 = QgsPoint(
+                                p1 = QgsPointXY(
                                     float(line1[len(numberOfLonColumn)-1]),
                                     float(line1[len(numberOfLatColumn)-1]))
-                                p2 = QgsPoint(
+                                p2 = QgsPointXY(
                                     float(line2[len(numberOfLonColumn)-1]),
                                     float(line2[len(numberOfLatColumn)-1]))
-                                l = d.computeDistanceBearing(p1, p2)[0]
+                                l = d.measureLine(p1, p2)
                         else:
+                            #print("BREAK")
+                            #logfile.close()
                             break
 
                     if line2:
@@ -343,47 +358,48 @@ class Move(QObject):
             i = 1
             distance = fabs(distance)
             moveDistance = fabs(distance)
-            p1 = QgsPoint(float(line[0][len(numberOfLonColumn)-1]),
+            p1 = QgsPointXY(float(line[0][len(numberOfLonColumn)-1]),
                           float(line[0][len(numberOfLatColumn)-1]))
-            p2 = QgsPoint(float(line[1][len(numberOfLonColumn)-1]),
+            p2 = QgsPointXY(float(line[1][len(numberOfLonColumn)-1]),
                           float(line[1][len(numberOfLatColumn)-1]))
-            allDist = d.computeDistanceBearing(p1, p2)[0]
+            allDist = d.measureLine(p1, p2)
+
             while moveDistance > allDist:
                 line.append(self.inputfile.readline().split(','))
                 i = i+1
                 if line[len(line)-1] == ['']:
                     break
-                p1 = QgsPoint(float(line[i-1][len(numberOfLonColumn)-1]),
+                p1 = QgsPointXY(float(line[i-1][len(numberOfLonColumn)-1]),
                               float(line[i-1][len(numberOfLatColumn)-1]))
-                p2 = QgsPoint(float(line[i][len(numberOfLonColumn)-1]),
+                p2 = QgsPointXY(float(line[i][len(numberOfLonColumn)-1]),
                               float(line[i][len(numberOfLatColumn)-1]))
-                allDist = allDist+d.computeDistanceBearing(p1, p2)[0]
+                allDist = allDist+d.measureLine(p1, p2)
 
             while line[len(line)-1] != ['']:
                 if self.abort is True:
                     break
 
                 allDist = 0
-                for i in reversed(range(1, len(line))):
-                    p1 = QgsPoint(float(line[i-1][len(numberOfLonColumn)-1]),
+                for i in reversed(list(range(1, len(line)))):
+                    p1 = QgsPointXY(float(line[i-1][len(numberOfLonColumn)-1]),
                                   float(line[i-1][len(numberOfLatColumn)-1]))
-                    p2 = QgsPoint(float(line[i][len(numberOfLonColumn)-1]),
+                    p2 = QgsPointXY(float(line[i][len(numberOfLonColumn)-1]),
                                   float(line[i][len(numberOfLatColumn)-1]))
-                    allDist = allDist+d.computeDistanceBearing(p1, p2)[0]
+                    allDist = allDist+d.measureLine(p1, p2)
                     if fabs(moveDistance) <= allDist:
                         for x in range(i-1):
                             del line[0]
                         break
 
-                for i in reversed(range(len(line))):
-                    p1 = QgsPoint(float(line[i-1][len(numberOfLonColumn)-1]),
+                for i in reversed(list(range(len(line)))):
+                    p1 = QgsPointXY(float(line[i-1][len(numberOfLonColumn)-1]),
                                   float(line[i-1][len(numberOfLatColumn)-1]))
-                    p2 = QgsPoint(float(line[i][len(numberOfLonColumn)-1]),
+                    p2 = QgsPointXY(float(line[i][len(numberOfLonColumn)-1]),
                                   float(line[i][len(numberOfLatColumn)-1]))
 
                     if p1 != p2:
                         aziA = d.bearing(p2, p1)
-                        l = d.computeDistanceBearing(p1, p2)[0]
+                        l = d.measureLine(p1, p2)
 
                         if moveDistance > l:
                             moveDistance = moveDistance-l
@@ -461,7 +477,6 @@ class Move(QObject):
 
         d = QgsDistanceArea()
         d.setEllipsoid(self.ellipsoid)
-        d.setEllipsoidalMode(True)
         d.ellipsoid()
         a = 6378137.0  # WGS84 ellipsoid parametres
         e2 = 0.081819190842622
@@ -484,14 +499,14 @@ class Move(QObject):
                 while moveTime > 0:  # for case of more than 1 second
                     if line2:
                         line2 = line2.split(',')
-                        p1 = QgsPoint(float(line1[len(numberOfLonColumn)-1]),
+                        p1 = QgsPointXY(float(line1[len(numberOfLonColumn)-1]),
                                       float(line1[len(numberOfLatColumn)-1]))
-                        p2 = QgsPoint(float(line2[len(numberOfLonColumn)-1]),
+                        p2 = QgsPointXY(float(line2[len(numberOfLonColumn)-1]),
                                       float(line2[len(numberOfLatColumn)-1]))
 
                         if p1 != p2:
                             aziA = d.bearing(p1, p2)
-                            l = d.computeDistanceBearing(p1, p2)[0]
+                            l = d.measureLine(p1, p2)
 
                             if moveTime > (float(line2[len(numberOfSecColumn)-1])-float(line1[len(numberOfSecColumn)-1])):
                                 moveTime = moveTime-(float(line2[len(numberOfSecColumn)-1])-float(line1[len(numberOfSecColumn)-1]))
@@ -565,22 +580,22 @@ class Move(QObject):
                     break
 
                 allSecs = 0
-                for i in reversed(range(1, len(line))):
+                for i in reversed(list(range(1, len(line)))):
                     allSecs = allSecs+(float(line[i][len(numberOfSecColumn)-1])-float(line[i-1][len(numberOfSecColumn)-1]))
                     if fabs(moveTime) <= allSecs:
                         for x in range(i-1):
                             del line[0]
                         break
 
-                for i in reversed(range(len(line))):
-                    p1 = QgsPoint(float(line[i-1][len(numberOfLonColumn)-1]),
+                for i in reversed(list(range(len(line)))):
+                    p1 = QgsPointXY(float(line[i-1][len(numberOfLonColumn)-1]),
                                   float(line[i-1][len(numberOfLatColumn)-1]))
-                    p2 = QgsPoint(float(line[i][len(numberOfLonColumn)-1]),
+                    p2 = QgsPointXY(float(line[i][len(numberOfLonColumn)-1]),
                                   float(line[i][len(numberOfLatColumn)-1]))
 
                     if p1 != p2:
                         aziA = d.bearing(p2, p1)
-                        l = d.computeDistanceBearing(p1, p2)[0]
+                        l = d.measureLine(p1, p2)
 
                         if moveTime < -(float(line[i][len(numberOfSecColumn)-1])-float(line[i-1][len(numberOfSecColumn)-1])):
                             moveTime = moveTime+(float(line[i][len(numberOfSecColumn)-1])-float(line[i-1][len(numberOfSecColumn)-1]))
